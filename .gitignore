@@ -8,3 +8,6 @@ env/
 node_modules/
 dist/
 .env
+.idea/
+node_modules/
+dist/
