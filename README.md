@@ -138,14 +138,29 @@ Model wyeksportowałem do JavaScript za pomocą `m2cgen`:
 
 ```python
 js_code = m2c.export_to_javascript(model)
+js_code += "\n\nexport { score };\n"
 
-with open("../exports/model.js", "w") as f:
-    f.write(js_code)
+export_paths = [
+    "../exports/model.js",
+    "../../web/src/model/predictor.js"
+]
+
+for export_path in export_paths:
+    os.makedirs(os.path.dirname(export_path), exist_ok=True)
+    with open(export_path, "w") as f:
+        f.write(js_code)
 ```
 
 Wygenerowany plik zawiera funkcję `score(input)`, która zwraca predykcję na podstawie tablicy danych wejściowych.
 
-Przykład:
+Notebook zapisuje ten sam model w dwóch miejscach:
+
+- `ml/exports/model.js` - eksport modelu w części ML,
+- `web/src/model/predictor.js` - plik importowany przez aplikację Vue.
+
+Dzięki temu po ponownym uruchomieniu notebooka nie trzeba ręcznie kopiować modelu do aplikacji webowej. Plik `web/src/model/predictor.js` jest generowany automatycznie.
+
+Przykład wygenerowanego modelu:
 
 ```javascript
 function score(input) {
@@ -170,7 +185,7 @@ Formularz zawiera pola:
 - `Previous Scores`,
 - `Extra Activities`,
 - `Sleep Hours`,
-- `Sample Question Papers Practiced`.
+- `Solved Practice Papers`.
 
 Po kliknięciu przycisku `Predict Performance` aplikacja:
 
@@ -181,6 +196,8 @@ Po kliknięciu przycisku `Predict Performance` aplikacja:
 5. wyświetla wynik predykcji.
 
 Interfejs przygotowałem w stylu retro-futurystycznym, z ciemnym tłem, neonową zielenią, niebieskimi akcentami i siatką w tle.
+
+Główne style interfejsu znajdują się w bloku `<style>` komponentu `App.vue`, a `style.css` zawiera podstawowe style globalne.
 
 ## Uruchomienie części ML
 
@@ -225,15 +242,18 @@ jupyter notebook
 Następnie otwieram plik:
 
 ```text
-ml/notebooks/training.ipynb
+notebooks/training.ipynb
 ```
 
-Po uruchomieniu wszystkich komórek powinny powstać pliki:
+Po uruchomieniu wszystkich komórek powinny powstać lub zostać zaktualizowane pliki:
 
 ```text
 ml/exports/metrics.json
 ml/exports/model.js
+web/src/model/predictor.js
 ```
+
+Plik `web/src/model/predictor.js` jest później importowany bezpośrednio w aplikacji Vue.
 
 ## Uruchomienie aplikacji webowej
 
@@ -282,7 +302,7 @@ Kolejność:
 2. Previous Scores
 3. Extra Activities
 4. Sleep Hours
-5. Sample Question Papers Practiced
+5. Sample Question Papers Practiced / Solved Practice Papers
 ```
 
 Model wyeksportowany do JavaScript korzysta z indeksów tablicy `input`, a nie z nazw kolumn. Zmiana kolejności spowoduje błędne wyniki predykcji.

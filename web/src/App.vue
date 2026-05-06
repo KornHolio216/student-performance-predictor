@@ -118,19 +118,19 @@ function predictPerformance() {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;700&display=swap");
 
-:global(*) {
+* {
   box-sizing: border-box;
 }
 
-:global(html),
-:global(body),
-:global(#app) {
+html,
+body,
+#app {
   width: 100%;
   min-height: 100%;
   margin: 0;
 }
 
-:global(body) {
+body {
   overflow-x: hidden;
   font-family: "Inter", sans-serif;
 }
