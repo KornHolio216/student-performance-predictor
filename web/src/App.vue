@@ -43,7 +43,7 @@ function predictPerformance() {
 
       <p class="description">
         Predict <strong>Performance Index</strong> with a browser-based ML model
-        trained on study habits, scores, sleep and practice data.
+        trained on study habits, scores, sleep and practice papers.
       </p>
 
       <section class="card">
@@ -98,7 +98,7 @@ function predictPerformance() {
         </div>
 
         <div class="form-group">
-          <label>Sample Question Papers Practiced</label>
+          <label>Solved Practice Papers</label>
           <input type="number" v-model="samplePapers" min="0" max="10" />
         </div>
 
